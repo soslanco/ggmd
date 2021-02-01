@@ -101,11 +101,6 @@ func (ms *MarketServer) List(ctx context.Context, in *pb.ListRequest) (*pb.ListR
 			Name:  result["name"].(string),
 			Count: result["count"].(int64),
 			Price: result["price"].(float64),
-			//Date:  timestamppb.New(time.Unix(result["date"].(int64)/1000, result["date"].(int64)%1000*1000000)),
-
-			// https://pkg.go.dev/google.golang.org/protobuf/types/known/timestamppb
-			//Date:  timestamppb.Now(),
-			//Date:  timestamppb.New(time.Now()),
 			Date: timestamppb.New(result["date"].(primitive.DateTime).Time()),
 		}
 	}
@@ -315,7 +310,7 @@ func (srv *Srv) CheckInitDB() error {
 	}
 
 	if len(names) == 0 {
-		// Create collection UPDATE
+		// Create collection TASK
 		srv.logger.Printf("Creating task (%s.%s) collection...", srv.dbName, srv.colTaskName)
 		err = createStatusCollection(srv.db.Client.Database(srv.dbName), srv.colTaskName)
 		if err != nil {
@@ -403,12 +398,12 @@ func createMarketCollection(db *mongo.Database, colname string) error {
 func main() {
 	var wg sync.WaitGroup
 
-	eMongoURI := os.Getenv("GGMD_MOGO_URI")
+	eMongoURI := os.Getenv("GGMD_MONGO_URI")
 	if eMongoURI == "" {
-		eMongoURI = "mongodb://root:example@mongo2"
+		eMongoURI = "mongodb://root:example@mongo"
 	}
 
-	eMongoDB := os.Getenv("GGMD_MOGO_DB")
+	eMongoDB := os.Getenv("GGMD_MONGO_DB")
 	if eMongoDB == "" {
 		eMongoDB = "crypto"
 	}

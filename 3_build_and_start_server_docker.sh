@@ -52,8 +52,8 @@ if [ -f "./$BIN" ]; then
 
 	# Start service
 	docker service create --name $SERVICE --network mongo_default --replicas 2 --restart-max-attempts 2 --publish $RPC_ADDR:$RPC_ADDR \
-		-e "GGMD_MOGO_URI=$MONGO_URI" \
-		-e "GGMD_MOGO_DB=$MONGO_DB" \
+		-e "GGMD_MONGO_URI=$MONGO_URI" \
+		-e "GGMD_MONGO_DB=$MONGO_DB" \
 		-e "RPC_ADDR=:$RPC_ADDR" \
 		--restart-condition "on-failure" soslanco/$SERVICE
 fi
