@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option go_package = "github.com/soslanco/ggmd/proto";
+
+package proto;
+
+import "google/protobuf/timestamp.proto";
+
+// The market service definition.
+service Market {
+
+    // Fetch market data and update DB
+    // File format: PRODUCT NAME;PRICE
+    rpc Fetch (FetchRequest) returns (FetchResponse) {}
+
+    // Get market data
+    rpc List (ListRequest) returns (ListResponse) {}
+}
+
+
+// The fetch request message
+message FetchRequest {
+
+    // URL of CSV file
+    string url = 1;
+}
+
+// The fetch response message
+message FetchResponse {
+
+    // Status
+    enum StatusCode {
+        QUEUED   = 0;
+        ERROR    = 1;
+    }
+    StatusCode status = 1;
+}
+
+// The list request message
+message ListRequest {
+
+    // first item id in response list. 0 or <nextid> value from response
+    sint64 start_id = 1;
+
+    // max number of items in response
+    uint32 page_size = 2;
+
+    // Sort field
+    enum SortField {
+        NAME     = 0;
+        COUNT    = 1;
+        PRICE    = 2;
+        DATE     = 3;
+    }
+    SortField sort = 3;
+    sint64 sort_dir = 4;
+}
+
+// The list response message
+message ListResponse {
+
+    // list
+    message Item {
+        string name = 1;
+        int64 count = 2;
+        double price = 3;
+        google.protobuf.Timestamp date = 4;
+    }
+    repeated Item list = 1;
+
+    // if nextid < 0 then no more items in list
+    sint64 next_id = 2;
+}

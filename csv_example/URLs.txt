@@ -1,0 +1,6 @@
+https://storage.googleapis.com/soslanco/crypto-2013.csv
+https://storage.googleapis.com/soslanco/crypto-2014.csv
+https://storage.googleapis.com/soslanco/crypto-2015.csv
+https://storage.googleapis.com/soslanco/crypto-2016.csv
+https://storage.googleapis.com/soslanco/crypto-2017.csv
+https://storage.googleapis.com/soslanco/crypto-2018.csv
